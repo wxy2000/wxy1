@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- 引入 X3DOM 框架 CSS 文件 -->
+    <link rel="stylesheet" type="text/css" href="x3dom/x3dom.css">
+    <!-- 引入 wqMV 框架 CSS 文件 -->
+    <link rel="stylesheet" type="text/css" href="wqMV/wqMV.css">
+    <title>Web 3D</title>
+</head>
+
+<body>
+    <section class="df dc d1 dy p5">
+        <div class="df p5 vc Mm" name="abc1">
+            <h1>Hello, Web 3D !</h1>
+            <p class="p5">This is my first html page with some 3d objects.</p>
+            <div id="wTime" class="p5"></div>
+        </div>
+
+        <!-- 基础开发 -->
+        <div class="df dc m50 Mm">
+            <div class="bb p51"><span>基础开发</span></div>
+            <div class="d1 p51">
+                <x3d width="100%" height='400px'>
+                    <scene>
+                        <!-- 红色正方体 -->
+                        <shape>
+                            <appearance>
+                                <material diffuseColor='1 0 0'></material>
+                            </appearance>
+                            <box></box>
+                        </shape>
+
+                        <!-- 绿色圆锥体 -->
+                        <transform translation='-3 0 0'>
+                            <shape>
+                                <appearance>
+                                    <material diffuseColor='0 1 0'></material>
+                                </appearance>
+                                <cone></cone>
+                            </shape>
+                        </transform>
+
+                        <!-- 蓝色球体 -->
+                        <transform translation='3 0 0'>
+                            <shape>
+                                <appearance>
+                                    <material diffuseColor='0 0 1'></material>
+                                </appearance>
+                                <sphere></sphere>
+                            </shape>
+                        </transform>
+                    </scene>
+                </x3d>
+            </div>
+        </div>
+
+        <!-- 动画 -->
+        <div class="df dc Mm">
+            <div class="bb p51"><span>动画</span></div>
+            <div class="d1 p51">
+                <x3d width="100%" height='400px'>
+                    <scene>
+                        <transform translation="0 -3 0" DEF="ball">
+                            <shape>
+                                <appearance>
+                                    <material diffuseColor='1 0 0'> </material>
+                                </appearance>
+                                <sphere></sphere>
+                            </shape>
+                        </transform>
+
+                        <timesensor id="wAnimate" DEF="time" cycleInterval="2" loop="true"></timesensor>
+                        <positioninterpolator DEF="move" key="0 0.3 1" keyValue="0 -3 0  0 3 0  0 -3 0">
+                        </positioninterpolator>
+                        <route fromNode="time" fromField="fraction_changed" toNode="move" toField="set_fraction">
+                        </route>
+                        <route fromNode="move" fromField="value_changed" toNode="ball" toField="translation"></route>
+                    </scene>
+                </x3d>
+            </div>
+        </div>
+
+        <!-- 高级渲染 -->
+        <div class="df dc m50 Mm">
+            <div class="bb p51"><span>高级渲染</span></div>
+            <div class="d1 p51">
+                <x3d width="100%" height='400px'>
+                    <scene>
+                        <!-- 松鼠图片渲染 -->
+                        <transform translation='-4 0 0'>
+                            <shape>
+                                <appearance>
+                                    <imagetexture url="img/squirrel.jpg"></imagetexture>
+                                </appearance>
+                                <box></box>
+                            </shape>
+                        </transform>
+
+                        <!-- PNG 图片渲染 -->
+                        <shape>
+                            <appearance>
+                                <imagetexture url="img/wxy.png"></imagetexture>
+                            </appearance>
+                            <box size="3,3,3"></box>
+                        </shape>
+
+                        <!-- 兔子视频渲染 -->
+                        <transform translation='4 0 0'>
+                            <shape>
+                                <appearance>
+                                    <movietexture repeatS="false" repeatT="false" loop='true' url="img/bunny.ogv"
+                                        scale="true" speed="1" pitch="1">
+                                    </movietexture>
+                                </appearance>
+                                <box></box>
+                            </shape>
+                        </transform>
+
+                        <!-- 声音 -->
+                        <sound>
+                            <audioclip loop="true" enabled="true" url="img/sound.mp3">
+                            </audioclip>
+                        </sound>
+                    </scene>
+                </x3d>
+            </div>
+        </div>
+
+        <!-- 实物模拟 -->
+        <div class="df dc Mm">
+            <div class="bb p51"><span>实物模拟</span></div>
+            <div class="d1 p51">
+                <x3d width="100%" height='400px'>
+                    <scene>
+                        <!-- 视野 -->
+                        <viewpoint id="wBest" position="-1.94639 1.79771 -2.89271"
+                            orientation="0.03886 0.99185 0.12133 3.75685" description="camera">
+                        </viewpoint>
+                        <viewpoint id="wFront" position="-0.07427 0.95329 -2.79608"
+                            orientation="-0.01451 0.99989 0.00319 3.15833" description="camera"></viewpoint>
+                        <viewpoint id="wRight" position="-2.43383 1.07351 -1.28700"
+                            orientation="-0.00318 -0.99950 -0.03159 2.06609" description="camera"></viewpoint>
+
+                        <!-- 光源 -->
+                        <directionallight id="wDirectional" direction="0 -1 0" on="true" intensity="2.0"
+                            shadowintensity="0.0" color="1,1,1" shadowmapsize="1024" znear="-1" zfar="-1"
+                            shadowcascades="1" shadowsplitfactor="1" shadowsplitoffset="0.1">
+                        </directionallight>
+                        <spotlight id="wSpot" on="true" beamwidth="0.9" color="0 0 1" cutoffangle="0.78"
+                            location="0 0 12" radius="22" intensity="1" shadowmapsize="1024" znear="-1" zfar="-1"
+                            direction="0,0,-1" attenuation="1,0,0" shadowcascades="1" shadowsplitfactor="1"
+                            shadowsplitoffset="0.1"></spotlight>
+
+                        <!-- 实物 x3d 模型 -->
+                        <inline namespacename="Deer" mapdeftoid="true" url="x3d/deer.x3d" render="true"
+                            bboxcenter="0,0,0" bboxsize="-1,-1,-1" load="true">
+                        </inline>
+                    </scene>
+                </x3d>
+
+                 <!-- 按钮 -->
+                <div class="df m5t tj">
+                    <input type="button" onclick="wxy.redNose()" value="点我">
+                    <input type="button" onclick="wxy.front()" value="前面">
+                    <input type="button" onclick="wxy.right()" value="右面">
+                    <input type="button" onclick="wxy.best()" value="最佳视野">
+                    <input type="button" onclick="wxy.light('wDirectional')" value="定向光">
+                    <input type="button" onclick="wxy.light('wSpot')" value="射灯">
+                </div>
+            </div>
+        </div>
+
+        <div class="df m5t p5 tj Mm">
+            <div>2023.12 &copy; WangXiaoyu And LiYiting (By x3dom.org)</div>
+        </div>
+    </section>
+
+    <!-- 引入 X3DOM 框架 JS 文件 -->
+    <script type="text/JavaScript" src="x3dom/x3dom.js"></script>
+    <!-- 引入 wqMV 框架 JS 文件 -->
+    <script type="text/JavaScript" src="wqMV/wqMV.js"></script>
+    <!-- 引入 主控 JS 文件 -->
+    <script type="text/JavaScript" src="js/index.js" defer></script>
+</body>
+
+</html>
